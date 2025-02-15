@@ -19,16 +19,14 @@ This is the backend for the MyPro application, built with FastAPI. It includes:
 
 4. Run the application:
 uvicorn app.main:app --reload
------------------------------------------
-Mysql Query Create Database : 
------------------------------------------
+
+# Mysql Query Create Database : 
+
 CREATE DATABASE mypro_db;
 USE mypro_db;
 
------------------------------------------
-To Create Tables 
------------------------------------------
 
+# To Create Tables 
 
 CREATE TABLE roles (
     id INT AUTO_INCREMENT PRIMARY KEY,
@@ -36,15 +34,12 @@ CREATE TABLE roles (
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 );
------------------------------------------
-Insert Roles
------------------------------------------
+
+# Insert Roles
+
 INSERT INTO roles (name) VALUES ('admin'), ('customer');
 
------------------------------------------
-Create the users Table
------------------------------------------
-
+# Create the users Table
 CREATE TABLE users (
     id INT AUTO_INCREMENT PRIMARY KEY,
     full_name VARCHAR(255) NOT NULL,
@@ -59,9 +54,9 @@ CREATE TABLE users (
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     FOREIGN KEY (role_id) REFERENCES roles(id)
 );
-------------------------------------------------
-Create the audit_logs Table
-------------------------------------
+
+# Create the audit_logs Table
+
 CREATE TABLE audit_logs (
     id INT AUTO_INCREMENT PRIMARY KEY,
     user_id INT NOT NULL,
@@ -71,9 +66,9 @@ CREATE TABLE audit_logs (
     FOREIGN KEY (user_id) REFERENCES users(id)
 );
 
------------------------------------------------------
-Insert New user 
-------------------------------------------------------
+
+# Insert New user 
+
 INSERT INTO users (
     full_name,
     email,
@@ -94,17 +89,16 @@ INSERT INTO users (
     NOW() + INTERVAL 24 HOUR         -- Token Expiry (24 hours from now)
 );
 
-------------------------------------------------------
-Verify a User’s Email
------------------------------------------------------
+# Verify a User’s Email
+
 UPDATE users
 SET is_active = TRUE,
     verification_token = NULL,
     token_expires_at = NULL
 WHERE verification_token = 'verification_token_here';
---------------------------------------------------------
-FETCH ALL USER 
----------------------------------------------------
+
+# FETCH ALL USER 
+
 SELECT 
     users.id,
     users.full_name,
@@ -114,9 +108,9 @@ SELECT
     roles.name AS role
 FROM users
 JOIN roles ON users.role_id = roles.id;
-----------------------------------------------------
- Fetch Audit Logs for a User
-----------------------------------------------------
+
+# Fetch Audit Logs for a User
+
 SELECT 
     audit_logs.id,
     audit_logs.action,
@@ -124,7 +118,7 @@ SELECT
     audit_logs.timestamp
 FROM audit_logs
 WHERE audit_logs.user_id = 1;  -- Replace 1 with the user's ID
----------------------------------------------------------
-DELETE USER 
------------------------------------------------------
+
+# DELETE USER 
+
 DELETE FROM users WHERE id = 1;  -- Replace 1 with the user's ID
